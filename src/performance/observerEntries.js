@@ -1,17 +1,17 @@
 
 import { lazyReportBatch } from '../report';
-export default function observerEntries(){
-    if (document.readyState === 'complete' ) {
+export default function observerEntries() {
+    if (document.readyState === 'complete') {
         observerEvent();
     } else {
         const onLoad = () => {
             observerEvent();
-            window.addEventListener('load', onLoad, true);
-        }
-        window.removeEventListener('load', onLoad, true);
+            window.removeEventListener('load', onLoad, true);
+        };
+        window.addEventListener('load', onLoad, true);
     }
 }
-export function observerEvent(){
+export function observerEvent() {
     const entryHandler = (list) => {
         const data = list.getEntries();
         for (let entry of data) {
@@ -23,7 +23,7 @@ export function observerEvent(){
                 type: 'performance', // 类型
                 subType: entry.entryType, //类型
                 sourceType: entry.initiatorType, // 资源类型
-                duration:entry.duration, // 加载时间
+                duration: entry.duration, // 加载时间
                 dns: entry.domainLookupEnd - entry.domainLookupStart, // dns解析时间
                 tcp: entry.connectEnd - entry.connectStart, // tcp连接时间
                 redirect: entry.redirectEnd - entry.redirectStart, // 重定向时间
@@ -34,13 +34,12 @@ export function observerEvent(){
                 transferSize: entry.transferSize, // 请求内容大小
                 resourceSize: entry.decodedBodySize, // 资源解压后的大小
                 startTime: performance.now(),
-
-            }
+            };
             lazyReportBatch(reportData);
             // console.log(entry);
         }
     };
 
     let observer = new PerformanceObserver(entryHandler);
-    observer.observe({type: ['resource'], buffered: true});
+    observer.observe({ type: ['resource'], buffered: true });
 }
