@@ -24,6 +24,7 @@ export function install(Vue, options) {
             startTime: window.performance.now(),
             pageURL: window.location.href,
         };
+        console.log('vue error', reportData);
         lazyReportBatch(reportData);
         if (handler) {
             handler.call(this, err, vm, info);
@@ -49,7 +50,7 @@ export function init(options) {
     setConfig(options);
     // performance();
     // error();
-    // behavior();
+    behavior();
 }
 
 export default {
